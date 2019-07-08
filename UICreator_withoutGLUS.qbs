@@ -29,9 +29,9 @@ Project {
 
         Properties {
             condition: qbs.targetOS.contains("windows") && qbs.architecture === "x86_64"
-            cpp.cxxLanguageVersion: "c++17"
+            cpp.cxxLanguageVersion: "c++20"
 
-            cpp.dynamicLibraries: ["glew32", "opengl32", "glfw3", "gdi32", "gomp"]
+            cpp.dynamicLibraries: ["glew32", "opengl32", "glfw3", "gdi32"]
         }
         Properties {
             condition: qbs.targetOS.contains("linux") && qbs.architecture === "x86_64"

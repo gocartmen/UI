@@ -3,7 +3,13 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <cstring>
+#include <chrono>
+#ifdef _WIN32_WINNT
+#include "windows.h"
+#elif
 #include <experimental/filesystem>
+using namespace experimental;
+#endif
 #include <algorithm>
 
 //#include "GL/glus.h"
@@ -18,7 +24,6 @@
 #include "textwriter.h"
 #include "types.h"
 #include "textureselector.h"
-//#include "windows.h"
 
 using namespace std;
 
@@ -607,12 +612,19 @@ void read_directory(const std::string& name)
         fileName << name;
         fileName << dp->d_name;
 
-        cout << fileName.str() << ": " << std::experimental::filesystem::is_directory(fileName.str().c_str()) << endl;
+        //cout << fileName.str() << ": " << filesystem::is_directory(fileName.str().c_str()) << endl;
 
-        if(std::experimental::filesystem::is_directory(fileName.str().c_str())){
+#ifdef _WIN32_WINNT
+        if(GetFileAttributesA(fileName.str().c_str()) == FILE_ATTRIBUTE_DIRECTORY){
             folderContent.push_back(dp->d_name);
             folderCount++;
         }
+#elif
+        if(filesystem::is_directory(fileName.str().c_str())){
+            folderContent.push_back(dp->d_name);
+            folderCount++;
+        }
+#endif
     }
     closedir(dirp);
 
@@ -627,9 +639,9 @@ void read_directory(const std::string& name)
         fileName << name;
         fileName << dp->d_name;
 
-        cout << fileName.str() << ": " << std::experimental::filesystem::is_directory(fileName.str().c_str()) << endl;
-
-        if(!std::experimental::filesystem::is_directory(fileName.str().c_str())){
+        //cout << fileName.str() << ": " << filesystem::is_directory(fileName.str().c_str()) << endl;
+#ifdef _WIN32_WINNT
+        if(GetFileAttributesA(fileName.str().c_str()) != FILE_ATTRIBUTE_DIRECTORY){
             bool isTGA = true;
             string len = dp->d_name;
             string ext = ".tga";
@@ -643,6 +655,22 @@ void read_directory(const std::string& name)
                 filenamesLocal.push_back(dp->d_name);
             }
         }
+#elif
+        if(!filesystem::is_directory(fileName.str().c_str())){
+            bool isTGA = true;
+            string len = dp->d_name;
+            string ext = ".tga";
+            for(int i=len.size()-1;i>len.size()-5;i--){
+                cout << len[i] << " - " << ext[i - (len.size()-4)] << endl;
+                if(len[i] != ext[i - (len.size()-4)]){
+                    isTGA = false;
+                }
+            }
+            if(isTGA){
+                filenamesLocal.push_back(dp->d_name);
+            }
+        }
+#endif
     }
     closedir(dirp);
 
@@ -1643,6 +1671,89 @@ void addBlock(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0){
     }
 }
 
+void removeBlock(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0){
+    cout << "Removing block..." << endl;
+
+    blockList.erase(blockList.begin() + actualBlockNum);
+
+    vbo[actualBlockNum*18 + 0] = 0;//0
+    vbo[actualBlockNum*18 + 1] = 0;//0
+    vbo[actualBlockNum*18 + 2] = (1.0);
+
+    vbo[actualBlockNum*18 + 3] = 0;//1
+    vbo[actualBlockNum*18 + 4] = 0;//0
+    vbo[actualBlockNum*18 + 5] = (1.0);
+
+    vbo[actualBlockNum*18 + 6] = 0;//0
+    vbo[actualBlockNum*18 + 7] = 0;//1
+    vbo[actualBlockNum*18 + 8] = (1.0);
+
+
+    vbo[actualBlockNum*18 + 9] = 0;//1
+    vbo[actualBlockNum*18 + 10] = 0;//0
+    vbo[actualBlockNum*18 + 11] = (1.0);
+
+    vbo[actualBlockNum*18 + 12] = 0;//1
+    vbo[actualBlockNum*18 + 13] = 0;//1
+    vbo[actualBlockNum*18 + 14] = (1.0);
+
+    vbo[actualBlockNum*18 + 15] = 0;//0
+    vbo[actualBlockNum*18 + 16] = 0;//1
+    vbo[actualBlockNum*18 + 17] = (1.0);
+
+
+    cbo[actualBlockNum*24 + 0] = (r*255);
+    cbo[actualBlockNum*24 + 1] = (g*255);
+    cbo[actualBlockNum*24 + 2] = (b*255);
+    cbo[actualBlockNum*24 + 3] = (255);
+
+    cbo[actualBlockNum*24 + 4] = (r*255);
+    cbo[actualBlockNum*24 + 5] = (g*255);
+    cbo[actualBlockNum*24 + 6] = (b*255);
+    cbo[actualBlockNum*24 + 7] = (255);
+
+    cbo[actualBlockNum*24 + 8] = (r*255);
+    cbo[actualBlockNum*24 + 9] = (g*255);
+    cbo[actualBlockNum*24 + 10] = (b*255);
+    cbo[actualBlockNum*24 + 11] = (255);
+
+
+    cbo[actualBlockNum*24 + 12] = (r*255);
+    cbo[actualBlockNum*24 + 13] = (g*255);
+    cbo[actualBlockNum*24 + 14] = (b*255);
+    cbo[actualBlockNum*24 + 15] = (255);
+
+    cbo[actualBlockNum*24 + 16] = (r*255);
+    cbo[actualBlockNum*24 + 17] = (g*255);
+    cbo[actualBlockNum*24 + 18] = (b*255);
+    cbo[actualBlockNum*24 + 19] = (255);
+
+    cbo[actualBlockNum*24 + 20] = (r*255);
+    cbo[actualBlockNum*24 + 21] = (g*255);
+    cbo[actualBlockNum*24 + 22] = (b*255);
+    cbo[actualBlockNum*24 + 23] = (255);
+
+    vbo.erase(vbo.begin() + actualBlockNum*18, vbo.begin() + actualBlockNum*18 + 18);
+    cbo.erase(cbo.begin() + actualBlockNum*24, cbo.begin() + actualBlockNum*24 + 24);
+    for(int i=0; i<6; i++){
+        vbo.push_back(0.0);
+        vbo.push_back(0.0);
+        vbo.push_back(0.0);
+
+        cbo.push_back(0);
+        cbo.push_back(0);
+        cbo.push_back(0);
+        cbo.push_back(0);
+    }
+
+    if(blockNum > 0){
+        blockNum--;
+    }
+    if(actualBlockNum >= blockNum && blockNum > 0){
+        actualBlockNum = blockNum-1;
+    }
+}
+
 void updateBlock(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0){
     cout << "Updating new block..." << endl;
     //18 egy block mérete (vbo)
@@ -2613,6 +2724,11 @@ void keyhandle(GLFWwindow *window, int key, int scancode, int action, int mods){
 
         if(key == GLFW_KEY_ENTER){
             blockList[actualBlockNum].texID = textureSelector->getActiveTex();
+        }
+
+        if(key == GLFW_KEY_DELETE){
+            removeBlock();
+            updateVBOs();
         }
 
         if(BOOL_SHIFT == true && key == GLFW_KEY_C){
