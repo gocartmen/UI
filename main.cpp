@@ -24,6 +24,7 @@ using namespace std::experimental;
 #include "textwriter.h"
 #include "types.h"
 #include "textureselector.h"
+#include "generatecppclass.h"
 
 using namespace std;
 
@@ -453,6 +454,12 @@ void saveUI(string index){
     }
 
     myFile.close();
+
+    stringstream fileName;
+    stringstream className;
+    fileName << "savedUI" << index;
+    className << "SavedUI" << index;
+    GenerateCppClass(blockList, fileName.str(), className.str());
 
     /*ofstream abcData;
     stringstream abcFileName;
