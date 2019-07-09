@@ -6,6 +6,8 @@ Project {
     CppApplication {
         consoleApplication: true
         files: [
+            "generatecppclass.cpp",
+            "generatecppclass.h",
             "main.cpp",
             "nodeeditor.cpp",
             "nodeeditor.h",
