@@ -6,9 +6,9 @@
 #include <chrono>
 #ifdef _WIN32_WINNT
 #include "windows.h"
-#elif
+#else
 #include <experimental/filesystem>
-using namespace experimental;
+using namespace std::experimental;
 #endif
 #include <algorithm>
 
@@ -619,7 +619,7 @@ void read_directory(const std::string& name)
             folderContent.push_back(dp->d_name);
             folderCount++;
         }
-#elif
+#else
         if(filesystem::is_directory(fileName.str().c_str())){
             folderContent.push_back(dp->d_name);
             folderCount++;
@@ -655,7 +655,7 @@ void read_directory(const std::string& name)
                 filenamesLocal.push_back(dp->d_name);
             }
         }
-#elif
+#else
         if(!filesystem::is_directory(fileName.str().c_str())){
             bool isTGA = true;
             string len = dp->d_name;
