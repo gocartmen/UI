@@ -44,7 +44,7 @@ void GenerateCppClass::addButtons(string fileName, string className)
         for(int j=i+1; j<buttons.size(); j++){
             GLfloat UL2x = blocks[buttons[j]].ULx;
             GLfloat UL2y = blocks[buttons[j]].ULy;
-            if((ULx > UL2x && ULy == UL2y) || ULy < UL2y){
+            if((ULx < UL2x && ULy == UL2y) || ULy < UL2y){
                 GLuint swap = buttons[i];
                 buttons[i] = buttons[j];
                 buttons[j] = swap;
@@ -95,6 +95,8 @@ void GenerateCppClass::addButtons(string fileName, string className)
                         << "\t\t} else {\n"
                         << "\t\t\t\n"
                         << "\t\t}\n"
+                        << "\t} else {\n"
+                        << "\t\t\n"
                         << "\t}\n"
                         << "}\n"
                         << "\n";
@@ -116,7 +118,7 @@ void GenerateCppClass::addIcons(string fileName, string className)
         for(int j=i+1; j<icons.size(); j++){
             GLfloat UL2x = blocks[icons[j]].ULx;
             GLfloat UL2y = blocks[icons[j]].ULy;
-            if((ULx > UL2x && ULy == UL2y) || ULy < UL2y){
+            if((ULx < UL2x && ULy == UL2y) || ULy < UL2y){
                 GLuint swap = icons[i];
                 icons[i] = icons[j];
                 icons[j] = swap;
@@ -137,6 +139,8 @@ void GenerateCppClass::addIcons(string fileName, string className)
                         << "\t\t} else {\n"
                         << "\t\t\t\n"
                         << "\t\t}\n"
+                        << "\t} else {\n"
+                        << "\t\t\n"
                         << "\t}\n"
                         << "}\n"
                         << "\n";
