@@ -34,16 +34,18 @@ GLfloat viewMatrix[16];
 GLfloat lMVPMatrix[16];
 
 GLuint shaderProgram;
+GLuint shaderProgramTitle;
 
 GLFWwindow * window;
 GLFWwindow * windowTitle;
 
-GLuint awidth = 1280;
-GLuint aheight = 720;
-GLuint awidthTitle = 1280;
+GLuint awidth = 1152;
+GLuint aheight = 648;
+GLuint awidthTitle = 1152;
 GLuint aheightTitle = 40;
 
 static GLuint g_vao;
+static GLuint g_vao2;
 
 GLuint VBO;
 GLuint CBO;
@@ -52,6 +54,23 @@ GLuint TBO;
 vector<GLfloat> vbo;
 vector<GLubyte> cbo;
 vector<GLfloat> tbo;
+
+
+GLuint blockNumTitle = 0;
+
+GLuint VBOT;
+GLuint CBOT;
+GLuint TBOT;
+
+vector<GLfloat> vbot;
+vector<GLubyte> cbot;
+vector<GLfloat> tbot;
+
+GLuint titleEditorButton;
+GLuint titleBar;
+GLuint titleButton1;
+GLuint titleButton2;
+GLuint titleButton3;
 
 
 GLuint ColorVBO;
@@ -1514,6 +1533,206 @@ void initVBOs(){
     glGenBuffers(1, &RacsCBO);
     glBindBuffer(GL_ARRAY_BUFFER, RacsCBO);
     glBufferData(GL_ARRAY_BUFFER, racscbo.size() * sizeof(GLubyte), (GLubyte*) racscbo.data(), GL_STREAM_DRAW);
+
+
+    blockNumTitle = 5;
+
+    cout << "Reserving " << blockNumTitle << " blocks for VBOs." << endl;
+
+    vbot.reserve(18*blockNumTitle);
+    cbot.reserve(24*blockNumTitle);
+    tbot.reserve(12*blockNumTitle);
+
+    for(int j=0;j<1;j++){
+        vbot.push_back(- -1);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(- (-1 + 0.30));
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(- -1);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+
+        vbot.push_back(- (-1 + 0.30));
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(- (-1 + 0.30));
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        vbot.push_back(- -1);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        for(int i=0;i<6;i++){
+            cbot.push_back(225);
+            cbot.push_back(245);
+            cbot.push_back(255);
+            cbot.push_back(128);
+        }
+
+        tbot.push_back(0);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(0);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+    }
+
+    for(int j=1;j<2;j++){
+        vbot.push_back(-1 + 0.30);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.70);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 0.30);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+
+        vbot.push_back(-1 + 1.70);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.70);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 0.30);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        for(int i=0;i<6;i++){
+            cbot.push_back(128);
+            cbot.push_back(128);
+            cbot.push_back(255);
+            cbot.push_back(128);
+        }
+
+        tbot.push_back(0);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(0);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+    }
+
+    for(int j=2;j<maxBlockNum;j++){
+        vbot.push_back(-(-1 + (0.85 + (j-2) * 0.05)*2));
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-(-1 + (0.85 + (j-1) * 0.05)*2));
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-(-1 + (0.85 + (j-2) * 0.05)*2));
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+
+        vbot.push_back(-(-1 + (0.85 + (j-1) * 0.05)*2));
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-(-1 + (0.85 + (j-1) * 0.05)*2));
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        vbot.push_back(-(-1 + (0.85 + (j-2) * 0.05)*2));
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        for(int i=0;i<6;i++){
+            if(j == 2 || j == 3){
+                cbot.push_back(150);
+                cbot.push_back(150);
+                cbot.push_back(255);
+                cbot.push_back(128);
+            }
+            if(j == 4){
+                cbot.push_back(255);
+                cbot.push_back(0);
+                cbot.push_back(0);
+                cbot.push_back(128);
+            }
+        }
+
+        tbot.push_back(0);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(0);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+    }
+    glfwMakeContextCurrent(windowTitle);
+    glGenVertexArrays(1, &g_vao2);
+    glBindVertexArray(g_vao2);
+    glClearColor(0.5, 0.5, 0.5, 0.5);
+
+    glGenBuffers(1, &VBOT);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOT);
+    glBufferData(GL_ARRAY_BUFFER, vbot.size() * sizeof(GLfloat), (GLfloat*) vbot.data(), GL_STREAM_DRAW);
+
+    glGenBuffers(1, &CBOT);
+    glBindBuffer(GL_ARRAY_BUFFER, CBOT);
+    glBufferData(GL_ARRAY_BUFFER, cbot.size() * sizeof(GLubyte), (GLubyte*) cbot.data(), GL_STREAM_DRAW);
+
+    glGenBuffers(1, &TBOT);
+    glBindBuffer(GL_ARRAY_BUFFER, TBOT);
+    glBufferData(GL_ARRAY_BUFFER, tbot.size() * sizeof(GLfloat), (GLfloat*) tbot.data(), GL_STREAM_DRAW);
+
+    titleEditorButton = loadTexture("textures/Editor/editorButton.tga");
+    titleBar = loadTexture("textures/Editor/bar.tga");
+    titleButton1 = loadTexture("textures/Editor/button1.tga");
+    titleButton2 = loadTexture("textures/Editor/button2.tga");
+    titleButton3 = loadTexture("textures/Editor/button3.tga");
+
+    glfwMakeContextCurrent(window);
 }
 
 void updateAIM(){
@@ -1913,7 +2132,7 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 bool init(void)
 {
     cout << "set clear color" << std::endl;
-    glClearColor(0.25f, 0.25f, 0.25f, 0.0f);
+    glClearColor(0.25f, 0.25f, 0.25f, 0.5f);
 
     cout << "generate VAO" << std::endl;
     glGenVertexArrays(1, &g_vao);
@@ -1922,6 +2141,10 @@ bool init(void)
     cout << "loading shaders...";
 
     shaderProgram = LoadShaders("shader/renderShader.vert.glsl", "shader/renderShader.frag.glsl");
+
+    glfwMakeContextCurrent(windowTitle);
+    shaderProgramTitle = LoadShaders("shader/renderShader.vert.glsl", "shader/renderShader.frag.glsl");
+    glfwMakeContextCurrent(window);
 
     cout << "  loaded!!" << std::endl;
 
@@ -2169,6 +2392,54 @@ void drawRacs(){
         glDisableVertexAttribArray(glGetAttribLocation(shaderProgram,"a_color"));
         //glEnableVertexAttribArray(glGetAttribLocation(shaderProgram,"a_tex0"));
     }
+}
+
+void drawTitleBar(){
+    glUseProgram(shaderProgramTitle);
+
+    viewport();
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBOT);
+    glVertexAttribPointer(glGetAttribLocation(shaderProgramTitle,"a_vertex"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(glGetAttribLocation(shaderProgramTitle,"a_vertex"));
+
+    glBindBuffer(GL_ARRAY_BUFFER, CBOT);
+    glVertexAttribPointer(glGetAttribLocation(shaderProgramTitle,"a_color"), 4, GL_UNSIGNED_BYTE, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(glGetAttribLocation(shaderProgramTitle,"a_color"));
+
+    glBindBuffer(GL_ARRAY_BUFFER, TBOT);
+    glVertexAttribPointer(glGetAttribLocation(shaderProgramTitle,"a_tex0"), 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(glGetAttribLocation(shaderProgramTitle,"a_tex0"));
+
+    glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
+    glBindTexture(GL_TEXTURE_2D, titleEditorButton);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
+    glBindTexture(GL_TEXTURE_2D, titleBar);
+    glDrawArrays(GL_TRIANGLES, 6, 6);
+    glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
+    glBindTexture(GL_TEXTURE_2D, titleButton1);
+    glDrawArrays(GL_TRIANGLES, 12, 6);
+    glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
+    glBindTexture(GL_TEXTURE_2D, titleButton2);
+    glDrawArrays(GL_TRIANGLES, 18, 6);
+    glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
+    glBindTexture(GL_TEXTURE_2D, titleButton3);
+    glDrawArrays(GL_TRIANGLES, 24, 6);
+
+    glDisableVertexAttribArray(glGetAttribLocation(shaderProgramTitle,"a_vertex"));
+    glDisableVertexAttribArray(glGetAttribLocation(shaderProgramTitle,"a_color"));
+    glDisableVertexAttribArray(glGetAttribLocation(shaderProgramTitle,"a_tex0"));
+}
+
+bool updateTitleBar(){
+    // Now, the background is painted blue.
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    //draw bar here
+    drawTitleBar();
+
+    return true;
 }
 
 bool update(float time)
@@ -3005,6 +3276,8 @@ void movemouse(GLFWwindow * window, double xPos, double yPos){
 }
 
 bool MOUSE_CLICK_LEFT_TITLE = false;
+double clickPosX = 0;
+double clickPosY = 0;
 
 void mousefuncTitle(GLFWwindow * window, int button, int x, int y){
     if(button == GLFW_MOUSE_BUTTON_LEFT){
@@ -3012,6 +3285,9 @@ void mousefuncTitle(GLFWwindow * window, int button, int x, int y){
         int state = glfwGetMouseButton(windowTitle, GLFW_MOUSE_BUTTON_LEFT);
         if(state == GLFW_PRESS){
             MOUSE_CLICK_LEFT_TITLE = true;
+            glfwGetCursorPos(windowTitle, &clickPosX, &clickPosY);
+            //clickPosX = x;
+            //clickPosY = y;
         }else{//GLFW_RELEASE
             MOUSE_CLICK_LEFT_TITLE = false;
         }
@@ -3057,14 +3333,16 @@ void movemouseTitle(GLFWwindow * window, double xPos, double yPos){
     MXTitle = xPos;
     MYTitle = yPos;
 
-    if(MOUSE_CLICK_LEFT_TITLE){
-        glfwGetWindowPos(::windowTitle, &wtx, &wty);
-        movedX = (MXTitle - prevMXTitle)*2;
-        movedY = (MYTitle - prevMYTitle)*2;
-    }
+    if(MOUSE_CLICK_LEFT_TITLE && awidthTitle*0.15 < MXTitle && awidthTitle*0.85 > MXTitle){
+        movedX = (floor(MXTitle) - floor(prevMXTitle))*2;
+        movedY = (floor(MYTitle) - floor(prevMYTitle))*2;
 
-    prevMXTitle = MXTitle;
-    prevMYTitle = MYTitle;
+        prevMXTitle = clickPosX;
+        prevMYTitle = clickPosY;
+    }else{
+        prevMXTitle = MXTitle;
+        prevMYTitle = MYTitle;
+    }
 }
 
 int initGLFW()
@@ -3086,10 +3364,11 @@ int initGLFW()
     // Open a window and create its OpenGL context
     //GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
 
-    glfwWindowHint(GLFW_DECORATED, false);
-    window = glfwCreateWindow( 1280, 720, "MAP Generator", NULL, NULL);
+    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
+    window = glfwCreateWindow( 1152, 648, "MAP Generator", NULL, NULL);
 
-    windowTitle = glfwCreateWindow( 1280,  40, "MAP Generator Title Bar", NULL, NULL);
+    windowTitle = glfwCreateWindow( 1152,  40, "MAP Generator Title Bar", NULL, NULL);
 
     if( window == NULL ){
         fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
@@ -3113,6 +3392,7 @@ int initGLFW()
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
     glfwSetWindowSizeCallback(window, reshape);
+    glfwSetWindowSizeCallback(windowTitle, reshape);
 
     glfwSetKeyCallback(window, keyhandle);
 
@@ -3127,6 +3407,9 @@ int initGLFW()
     return 0;
 }
 
+bool isMinimized = false;
+bool isMaximized = false;
+
 int main(int argc, char* argv[])
 {
     initGLFW();
@@ -3138,28 +3421,74 @@ int main(int argc, char* argv[])
     //glusWindowSwapInterval(1);
     //glfwSwapInterval(1);
 
+    glfwGetWindowPos(::windowTitle, &wtx, &wty);
     GLfloat time = 1.0f / 60.0f;
     // Enter the update render loop. See below state machine for more information.
     do{
         auto t0 = std::chrono::high_resolution_clock::now();
 
+        if(MOUSE_CLICK_LEFT_TITLE && awidthTitle*0.15 < MXTitle && awidthTitle*0.85 > MXTitle){
+            glfwGetWindowPos(::windowTitle, &wtx, &wty);
+            glfwSetCursorPos(::windowTitle, clickPosX, clickPosY);
+        }
+        if(MOUSE_CLICK_LEFT_TITLE && awidthTitle*0.85 < MXTitle && awidthTitle*0.90 > MXTitle){
+            if(isMinimized == false){
+                glfwSetWindowSize(window, 0, 0);
+                isMinimized = true;
+            }else{
+                glfwSetWindowSize(window, 1152, 648);
+                glfwSetWindowSize(windowTitle, 1152, 40);
+                isMinimized = false;
+            }
+            MOUSE_CLICK_LEFT_TITLE = false;
+        }
+        if(MOUSE_CLICK_LEFT_TITLE && awidthTitle*0.90 < MXTitle && awidthTitle*0.95 > MXTitle){
+            GLFWmonitor* primary = glfwGetPrimaryMonitor();
+
+            const GLFWvidmode* mode = glfwGetVideoMode(primary);
+            if(isMaximized == false){
+                glfwSetWindowSize(window, mode->width, mode->height);
+                glfwSetWindowSize(windowTitle, 1152, 40);
+                isMaximized = true;
+            }else{
+                glfwSetWindowSize(window, 1152, 648);
+                glfwSetWindowSize(windowTitle, 1152, 40);
+                isMaximized = false;
+            }
+            MOUSE_CLICK_LEFT_TITLE = false;
+        }
+        if(MOUSE_CLICK_LEFT_TITLE && awidthTitle*0.95 < MXTitle && awidthTitle*1.00 > MXTitle){
+            glfwSetWindowShouldClose(window, GLFW_TRUE);
+        }
+
+        glfwMakeContextCurrent(window);
+
         update(time);
 
-        // Swap buffers
+        glfwPollEvents();
         glfwSwapBuffers(window);
+        glfwMakeContextCurrent(windowTitle);
+
+        updateTitleBar();
+
+        glfwPollEvents();
         glfwSwapBuffers(windowTitle);
 
-        glfwMakeContextCurrent(windowTitle);
-        glfwPollEvents();
-        glfwWaitEvents();
-        glfwMakeContextCurrent(window);
-        glfwPollEvents();
-        glfwWaitEvents();
+        wtx += movedX;
+        wty += movedY;
+        if(wtx < 0){
+            wtx = 0;
+        }
+        if(wty < 0){
+            wty = 0;
+        }
 
-        glfwGetWindowPos(::windowTitle, &wtx, &wty);
-        glfwSetWindowPos(::windowTitle, wtx + movedX, wty + movedY);
-        glfwGetWindowPos(::windowTitle, &wtx, &wty);
+        glfwMakeContextCurrent(window);
         glfwSetWindowPos(::window, wtx, wty + 40);
+
+        glfwMakeContextCurrent(windowTitle);
+        glfwSetWindowPos(::windowTitle, wtx, wty);
+        glfwWaitEvents();
 
         movedX = 0;
         movedY = 0;
