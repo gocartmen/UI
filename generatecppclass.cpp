@@ -37,6 +37,7 @@ void GenerateCppClass::addButtons(string fileName, string className)
         }
     }
 
+    for(int ci=0; ci<buttons.size(); ci++) //iterate multiple times to be sure it is in order
     for(int i=0; i<buttons.size(); i++){
         GLfloat ULx = blocks[buttons[i]].ULx;
         GLfloat ULy = blocks[buttons[i]].ULy;
@@ -44,7 +45,7 @@ void GenerateCppClass::addButtons(string fileName, string className)
         for(int j=i+1; j<buttons.size(); j++){
             GLfloat UL2x = blocks[buttons[j]].ULx;
             GLfloat UL2y = blocks[buttons[j]].ULy;
-            if((ULx < UL2x && ULy == UL2y) || ULy < UL2y){
+            if(((GLint)(ULx*100) < (GLint)(UL2x*100) && (GLint)(ULy*100) == (GLint)(UL2y*100)) || (GLint)(ULy*100) < (GLint)(UL2y*100)){
                 GLuint swap = buttons[i];
                 buttons[i] = buttons[j];
                 buttons[j] = swap;
@@ -111,6 +112,7 @@ void GenerateCppClass::addIcons(string fileName, string className)
         }
     }
 
+    for(int ci=0; ci<icons.size(); ci++) //iterate multiple times to be sure it is in order
     for(int i=0; i<icons.size(); i++){
         GLfloat ULx = blocks[icons[i]].ULx;
         GLfloat ULy = blocks[icons[i]].ULy;
@@ -118,7 +120,7 @@ void GenerateCppClass::addIcons(string fileName, string className)
         for(int j=i+1; j<icons.size(); j++){
             GLfloat UL2x = blocks[icons[j]].ULx;
             GLfloat UL2y = blocks[icons[j]].ULy;
-            if((ULx < UL2x && ULy == UL2y) || ULy < UL2y){
+            if(((GLint)(ULx*100) < (GLint)(UL2x*100) && (GLint)(ULy*100) == (GLint)(UL2y*100)) || (GLint)(ULy*100) < (GLint)(UL2y*100)){
                 GLuint swap = icons[i];
                 icons[i] = icons[j];
                 icons[j] = swap;

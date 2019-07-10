@@ -36,9 +36,12 @@ GLfloat lMVPMatrix[16];
 GLuint shaderProgram;
 
 GLFWwindow * window;
+GLFWwindow * windowTitle;
 
 GLuint awidth = 1280;
 GLuint aheight = 720;
+GLuint awidthTitle = 1280;
+GLuint aheightTitle = 40;
 
 static GLuint g_vao;
 
@@ -79,8 +82,16 @@ GLfloat POSZ = 0;
 GLint scrollprev = 0;
 GLfloat MX;
 GLfloat MY;
+GLfloat MXTitle;
+GLfloat MYTitle;
 GLfloat szogx;
 GLfloat szogy;
+
+
+GLint wtx = 0;
+GLint wty = 0;
+GLint movedX = 0;
+GLint movedY = 0;
 //----------
 
 //KEYS------
@@ -2993,6 +3004,69 @@ void movemouse(GLFWwindow * window, double xPos, double yPos){
     }*/
 }
 
+bool MOUSE_CLICK_LEFT_TITLE = false;
+
+void mousefuncTitle(GLFWwindow * window, int button, int x, int y){
+    if(button == GLFW_MOUSE_BUTTON_LEFT){
+        //std::cout << "bal katt: " << (GLuint)state << std::endl;
+        int state = glfwGetMouseButton(windowTitle, GLFW_MOUSE_BUTTON_LEFT);
+        if(state == GLFW_PRESS){
+            MOUSE_CLICK_LEFT_TITLE = true;
+        }else{//GLFW_RELEASE
+            MOUSE_CLICK_LEFT_TITLE = false;
+        }
+    }
+    if(button == GLFW_MOUSE_BUTTON_MIDDLE){
+        //std::cout << "bal katt: " << (GLuint)state << std::endl;
+        int state = glfwGetMouseButton(windowTitle, GLFW_MOUSE_BUTTON_MIDDLE);
+        if(state == GLFW_PRESS){
+
+        }else{//GLFW_RELEASE
+
+        }
+    }
+    if(button == GLFW_MOUSE_BUTTON_RIGHT){
+        //std::cout << "jobb katt: " << (GLuint)state << std::endl;
+        int state = glfwGetMouseButton(windowTitle, GLFW_MOUSE_BUTTON_RIGHT);
+        if(state == GLFW_PRESS){
+
+        }else{//GLFW_RELEASE
+
+        }
+    }
+}
+
+void scrollfuncTitle(GLFWwindow * window, double x, double y){
+    if(y > scrollprev){//scrolling up
+
+    }
+    if(y < scrollprev){//scrolling down
+
+    }
+
+    scrollprev = y;
+}
+
+GLint prevMXTitle = 0;
+GLint prevMYTitle = 0;
+
+void movemouseTitle(GLFWwindow * window, double xPos, double yPos){
+    //cout << MX << endl;
+    //cout << MY << endl;
+
+    MXTitle = xPos;
+    MYTitle = yPos;
+
+    if(MOUSE_CLICK_LEFT_TITLE){
+        glfwGetWindowPos(::windowTitle, &wtx, &wty);
+        movedX = (MXTitle - prevMXTitle)*2;
+        movedY = (MYTitle - prevMYTitle)*2;
+    }
+
+    prevMXTitle = MXTitle;
+    prevMYTitle = MYTitle;
+}
+
 int initGLFW()
 {
     // Initialise GLFW
@@ -3012,13 +3086,18 @@ int initGLFW()
     // Open a window and create its OpenGL context
     //GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
 
+    glfwWindowHint(GLFW_DECORATED, false);
     window = glfwCreateWindow( 1280, 720, "MAP Generator", NULL, NULL);
+
+    windowTitle = glfwCreateWindow( 1280,  40, "MAP Generator Title Bar", NULL, NULL);
 
     if( window == NULL ){
         fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
         glfwTerminate();
         return -1;
     }
+
+    glfwSwapInterval(0);
 
     glfwMakeContextCurrent(window); // Initialize GLEW
     glewExperimental=true; // Needed in core profile
@@ -3040,6 +3119,10 @@ int initGLFW()
     glfwSetMouseButtonCallback(window, mousefunc);
     glfwSetCursorPosCallback(window, movemouse);
     glfwSetScrollCallback(window, scrollfunc);
+
+    glfwSetMouseButtonCallback(windowTitle, mousefuncTitle);
+    glfwSetCursorPosCallback(windowTitle, movemouseTitle);
+    glfwSetScrollCallback(windowTitle, scrollfuncTitle);
 
     return 0;
 }
@@ -3064,13 +3147,28 @@ int main(int argc, char* argv[])
 
         // Swap buffers
         glfwSwapBuffers(window);
+        glfwSwapBuffers(windowTitle);
+
+        glfwMakeContextCurrent(windowTitle);
         glfwPollEvents();
+        glfwWaitEvents();
+        glfwMakeContextCurrent(window);
+        glfwPollEvents();
+        glfwWaitEvents();
+
+        glfwGetWindowPos(::windowTitle, &wtx, &wty);
+        glfwSetWindowPos(::windowTitle, wtx + movedX, wty + movedY);
+        glfwGetWindowPos(::windowTitle, &wtx, &wty);
+        glfwSetWindowPos(::window, wtx, wty + 40);
+
+        movedX = 0;
+        movedY = 0;
 
         auto t1 = std::chrono::high_resolution_clock::now();
         auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
         time = (GLfloat)(diff.count()) / 1000.0f;
     } // Check if the ESC key was pressed or the window was closed
-    while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
+    while( (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwGetKey(windowTitle, GLFW_KEY_ESCAPE ) != GLFW_PRESS) &&
            glfwWindowShouldClose(window) == 0 );
 
     return 0;
