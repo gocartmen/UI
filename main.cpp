@@ -68,6 +68,11 @@ vector<GLfloat> tbot;
 
 GLuint titleEditorButton;
 GLuint titleBar;
+GLuint titleAddButton;
+GLuint titleTexButton;
+GLuint titleNodeButton;
+GLuint titleArrowL;
+GLuint titleArrowR;
 GLuint titleButton1;
 GLuint titleButton2;
 GLuint titleButton3;
@@ -398,6 +403,7 @@ void saveTextures(){
 }
 
 void loadTextures(){
+    glfwMakeContextCurrent(window);
     //load texture data
     ifstream file;
     file.open("texture.data");
@@ -422,6 +428,7 @@ void loadTextures(){
 }
 
 void updateVBOs(){
+    glfwMakeContextCurrent(window);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, vbo.size() * sizeof(GLfloat), (GLfloat*) vbo.data());
 
@@ -448,6 +455,7 @@ void loadUIpro(){
 }
 
 void createUI(string index){
+    glfwMakeContextCurrent(window);
     ofstream myFile;
     stringstream filename;
     filename.str("");
@@ -461,6 +469,7 @@ void createUI(string index){
 }
 
 void saveUI(string index){
+    glfwMakeContextCurrent(window);
     ofstream myFile;
     stringstream filename;
     filename.str("");
@@ -509,6 +518,7 @@ void saveUI(string index){
 }
 
 void loadUI(string index){
+    glfwMakeContextCurrent(window);
     actualBlockNum = 0;
     blockList.erase(blockList.begin(), blockList.end());
     for(int i=0;i<maxBlockNum*18;i++){
@@ -583,6 +593,7 @@ void loadUI(string index){
 }
 
 void init_deinit_NodeEditor(){
+    glfwMakeContextCurrent(window);
     isNodeEditor = !isNodeEditor;
 
     if(isNodeEditor){
@@ -638,6 +649,7 @@ bool compareFunction (std::string a, std::string b) {return a<b;}
 
 void read_directory(const std::string& name)
 {
+    glfwMakeContextCurrent(window);
     GLuint folderCount = 0;
     folderContent.erase(folderContent.begin(),folderContent.end());
 
@@ -724,10 +736,12 @@ void rounder(GLfloat &number){
 }
 
 void initTextureSelector(){
+    glfwMakeContextCurrent(window);
     textureSelector->initUI(folderContent, textTexture);
 }
 
 void initBlockModeText(){
+    glfwMakeContextCurrent(window);
     blockModeTexts[0] = "BackGround";
     blockModeTexts[1] = "Button";
     blockModeTexts[2] = "ScrollList";
@@ -747,6 +761,7 @@ void initBlockModeText(){
 }
 
 void drawBlockModeText(){
+    glfwMakeContextCurrent(window);
     if(blockNum > 0){
         if(MX < awidth/2){
             blockMode->updateText(0, blockModeTexts[blockList[actualBlockNum].ID]);
@@ -759,6 +774,7 @@ void drawBlockModeText(){
 }
 
 void initVBOs(){
+    glfwMakeContextCurrent(window);
     textTexture = loadTexture("textures/abc.tga");
 
     textureSelector = new TextureSelector();
@@ -1535,7 +1551,7 @@ void initVBOs(){
     glBufferData(GL_ARRAY_BUFFER, racscbo.size() * sizeof(GLubyte), (GLubyte*) racscbo.data(), GL_STREAM_DRAW);
 
 
-    blockNumTitle = 5;
+    blockNumTitle = 9;
 
     cout << "Reserving " << blockNumTitle << " blocks for VBOs." << endl;
 
@@ -1548,7 +1564,7 @@ void initVBOs(){
         vbot.push_back(-1);
         vbot.push_back(0);
 
-        vbot.push_back(- (-1 + 0.30));
+        vbot.push_back(- (-1 + 0.15));
         vbot.push_back(-1);
         vbot.push_back(0);
 
@@ -1557,11 +1573,11 @@ void initVBOs(){
         vbot.push_back(0);
 
 
-        vbot.push_back(- (-1 + 0.30));
+        vbot.push_back(- (-1 + 0.15));
         vbot.push_back(-1);
         vbot.push_back(0);
 
-        vbot.push_back(- (-1 + 0.30));
+        vbot.push_back(- (-1 + 0.15));
         vbot.push_back(1);
         vbot.push_back(0);
 
@@ -1570,10 +1586,10 @@ void initVBOs(){
         vbot.push_back(0);
 
         for(int i=0;i<6;i++){
-            cbot.push_back(225);
-            cbot.push_back(245);
+            cbot.push_back(225-30);
+            cbot.push_back(245-30);
+            cbot.push_back(255-30);
             cbot.push_back(255);
-            cbot.push_back(128);
         }
 
         tbot.push_back(0);
@@ -1597,36 +1613,36 @@ void initVBOs(){
     }
 
     for(int j=1;j<2;j++){
-        vbot.push_back(-1 + 0.30);
+        vbot.push_back(- (-1 + 0.15));
         vbot.push_back(-1);
         vbot.push_back(0);
 
-        vbot.push_back(-1 + 1.70);
+        vbot.push_back(- (-1 + 0.30));
         vbot.push_back(-1);
         vbot.push_back(0);
 
-        vbot.push_back(-1 + 0.30);
+        vbot.push_back(- (-1 + 0.15));
         vbot.push_back(1);
         vbot.push_back(0);
 
 
-        vbot.push_back(-1 + 1.70);
+        vbot.push_back(- (-1 + 0.30));
         vbot.push_back(-1);
         vbot.push_back(0);
 
-        vbot.push_back(-1 + 1.70);
+        vbot.push_back(- (-1 + 0.30));
         vbot.push_back(1);
         vbot.push_back(0);
 
-        vbot.push_back(-1 + 0.30);
+        vbot.push_back(- (-1 + 0.15));
         vbot.push_back(1);
         vbot.push_back(0);
 
         for(int i=0;i<6;i++){
-            cbot.push_back(128);
-            cbot.push_back(128);
+            cbot.push_back(225-30);
+            cbot.push_back(245-30);
+            cbot.push_back(255-30);
             cbot.push_back(255);
-            cbot.push_back(128);
         }
 
         tbot.push_back(0);
@@ -1649,44 +1665,309 @@ void initVBOs(){
         tbot.push_back(0);
     }
 
-    for(int j=2;j<maxBlockNum;j++){
-        vbot.push_back(-(-1 + (0.85 + (j-2) * 0.05)*2));
+    for(int j=2;j<3;j++){
+        vbot.push_back(-1 + 1.70);
         vbot.push_back(-1);
         vbot.push_back(0);
 
-        vbot.push_back(-(-1 + (0.85 + (j-1) * 0.05)*2));
+        vbot.push_back(-1 + 1.55);
         vbot.push_back(-1);
         vbot.push_back(0);
 
-        vbot.push_back(-(-1 + (0.85 + (j-2) * 0.05)*2));
+        vbot.push_back(-1 + 1.70);
         vbot.push_back(1);
         vbot.push_back(0);
 
 
-        vbot.push_back(-(-1 + (0.85 + (j-1) * 0.05)*2));
+        vbot.push_back(-1 + 1.55);
         vbot.push_back(-1);
         vbot.push_back(0);
 
-        vbot.push_back(-(-1 + (0.85 + (j-1) * 0.05)*2));
+        vbot.push_back(-1 + 1.55);
         vbot.push_back(1);
         vbot.push_back(0);
 
-        vbot.push_back(-(-1 + (0.85 + (j-2) * 0.05)*2));
+        vbot.push_back(-1 + 1.70);
         vbot.push_back(1);
         vbot.push_back(0);
 
         for(int i=0;i<6;i++){
-            if(j == 2 || j == 3){
-                cbot.push_back(150);
-                cbot.push_back(150);
-                cbot.push_back(255);
-                cbot.push_back(128);
+            cbot.push_back(100);
+            cbot.push_back(100);
+            cbot.push_back(100);
+            cbot.push_back(255);
+        }
+
+        tbot.push_back(0);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(0);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+    }
+
+    for(int j=3;j<4;j++){
+        vbot.push_back(-1 + 1.55);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.50);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.55);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+
+        vbot.push_back(-1 + 1.50);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.50);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.55);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        for(int i=0;i<6;i++){
+            cbot.push_back(128-30);
+            cbot.push_back(128-30);
+            cbot.push_back(255-30);
+            cbot.push_back(192);
+        }
+
+        tbot.push_back(0);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(0);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+    }
+
+    for(int j=4;j<5;j++){
+        vbot.push_back(-1 + 1.50);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.45);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.50);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+
+        vbot.push_back(-1 + 1.45);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.45);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.50);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        for(int i=0;i<6;i++){
+            cbot.push_back(128-30);
+            cbot.push_back(128-30);
+            cbot.push_back(255-30);
+            cbot.push_back(192);
+        }
+
+        tbot.push_back(0);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(0);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+    }
+
+    for(int j=5;j<6;j++){
+        vbot.push_back(-1 + 1.45);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.40);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.45);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+
+        vbot.push_back(-1 + 1.40);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.40);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.45);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        for(int i=0;i<6;i++){
+            cbot.push_back(128-30);
+            cbot.push_back(128-30);
+            cbot.push_back(255-30);
+            cbot.push_back(192);
+        }
+
+        tbot.push_back(0);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(0);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+    }
+
+    for(int j=6;j<7;j++){
+        vbot.push_back(-1 + 0.30);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.40);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 0.30);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+
+        vbot.push_back(-1 + 1.40);
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 1.40);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        vbot.push_back(-1 + 0.30);
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        for(int i=0;i<6;i++){
+            cbot.push_back(128);
+            cbot.push_back(128);
+            cbot.push_back(255);
+            cbot.push_back(192);
+        }
+
+        tbot.push_back(0);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+
+
+        tbot.push_back(1);
+        tbot.push_back(1);
+
+        tbot.push_back(1);
+        tbot.push_back(0);
+
+        tbot.push_back(0);
+        tbot.push_back(0);
+    }
+
+    for(int j=7;j<maxBlockNum;j++){
+        vbot.push_back(-(-1 + (0.85 + (j-7) * 0.05)*2));
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-(-1 + (0.85 + (j-6) * 0.05)*2));
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-(-1 + (0.85 + (j-7) * 0.05)*2));
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+
+        vbot.push_back(-(-1 + (0.85 + (j-6) * 0.05)*2));
+        vbot.push_back(-1);
+        vbot.push_back(0);
+
+        vbot.push_back(-(-1 + (0.85 + (j-6) * 0.05)*2));
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        vbot.push_back(-(-1 + (0.85 + (j-7) * 0.05)*2));
+        vbot.push_back(1);
+        vbot.push_back(0);
+
+        for(int i=0;i<6;i++){
+            if(j == 7 || j == 8){
+                cbot.push_back(150-30);
+                cbot.push_back(150-30);
+                cbot.push_back(255-30);
+                cbot.push_back(192);
             }
-            if(j == 4){
-                cbot.push_back(255);
+            if(j == 9){
+                cbot.push_back(255-30);
                 cbot.push_back(0);
                 cbot.push_back(0);
-                cbot.push_back(128);
+                cbot.push_back(192);
             }
         }
 
@@ -1728,6 +2009,11 @@ void initVBOs(){
 
     titleEditorButton = loadTexture("textures/Editor/editorButton.tga");
     titleBar = loadTexture("textures/Editor/bar.tga");
+    titleAddButton = loadTexture("textures/Editor/addButton.tga");
+    titleTexButton = loadTexture("textures/Editor/texButton.tga");
+    titleNodeButton = loadTexture("textures/Editor/nodeButton.tga");
+    titleArrowL = loadTexture("textures/Buttons/arrowL.tga");
+    titleArrowR = loadTexture("textures/Buttons/arrowR.tga");
     titleButton1 = loadTexture("textures/Editor/button1.tga");
     titleButton2 = loadTexture("textures/Editor/button2.tga");
     titleButton3 = loadTexture("textures/Editor/button3.tga");
@@ -1736,6 +2022,7 @@ void initVBOs(){
 }
 
 void updateAIM(){
+    glfwMakeContextCurrent(window);
     if(blockNum < 1){
         //aimvbo[0] = (((GLfloat)(MX)/(GLfloat)(awidth)-0.5)*2.0);
         aimvbo[1] = (((GLfloat)(MY)/(GLfloat)(aheight)-0.5)*2.0);
@@ -1796,6 +2083,7 @@ void updateAIM(){
 }
 
 void updateColor(){
+    glfwMakeContextCurrent(window);
     colorcbo[24*6 + 4] = selectedR;
     colorcbo[24*6 + 5] = selectedG;
     colorcbo[24*6 + 6] = selectedB;
@@ -1821,6 +2109,7 @@ void updateColor(){
 }
 
 void addBlock(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0){
+    glfwMakeContextCurrent(window);
     cout << "Adding new block..." << endl;
     blockNum++;
     actualBlockNum = blockNum-1;
@@ -1909,6 +2198,7 @@ void addBlock(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0){
 }
 
 void removeBlock(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0){
+    glfwMakeContextCurrent(window);
     cout << "Removing block..." << endl;
 
     blockList.erase(blockList.begin() + actualBlockNum);
@@ -1992,6 +2282,7 @@ void removeBlock(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0){
 }
 
 void updateBlock(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0){
+    glfwMakeContextCurrent(window);
     cout << "Updating new block..." << endl;
     //18 egy block mérete (vbo)
     //24 egy block color mérete (cbo)
@@ -2028,6 +2319,7 @@ void updateBlock(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0){
 }
 
 void updateBlockColor(GLubyte r, GLubyte g, GLubyte b){
+    glfwMakeContextCurrent(window);
     cout << "Updating color of block..." << endl;
     blockList[actualBlockNum].r = r;
     blockList[actualBlockNum].g = g;
@@ -2188,11 +2480,22 @@ bool init(void)
 
 void reshape(GLFWwindow * window, int width, int height)
 {
+    glfwMakeContextCurrent(window);
     // Set the viewport depending on the width and height of the window.
     glViewport(0, 0, width, height);
 
     awidth = width;
     aheight = height;
+}
+
+void reshapeTitle(GLFWwindow * window, int width, int height)
+{
+    glfwMakeContextCurrent(window);
+    // Set the viewport depending on the width and height of the window.
+    glViewport(0, 0, width, height);
+
+    awidthTitle = width;
+    aheightTitle = height;
 }
 
 void eventhandler(GLfloat time){
@@ -2415,17 +2718,32 @@ void drawTitleBar(){
     glBindTexture(GL_TEXTURE_2D, titleEditorButton);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
-    glBindTexture(GL_TEXTURE_2D, titleBar);
+    glBindTexture(GL_TEXTURE_2D, titleTexButton);
     glDrawArrays(GL_TRIANGLES, 6, 6);
     glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
-    glBindTexture(GL_TEXTURE_2D, titleButton1);
+    glBindTexture(GL_TEXTURE_2D, titleNodeButton);
     glDrawArrays(GL_TRIANGLES, 12, 6);
     glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
-    glBindTexture(GL_TEXTURE_2D, titleButton2);
+    glBindTexture(GL_TEXTURE_2D, titleArrowL);
     glDrawArrays(GL_TRIANGLES, 18, 6);
     glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
-    glBindTexture(GL_TEXTURE_2D, titleButton3);
+    glBindTexture(GL_TEXTURE_2D, titleArrowR);
     glDrawArrays(GL_TRIANGLES, 24, 6);
+    glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
+    glBindTexture(GL_TEXTURE_2D, titleAddButton);
+    glDrawArrays(GL_TRIANGLES, 30, 6);
+    glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
+    glBindTexture(GL_TEXTURE_2D, titleBar);
+    glDrawArrays(GL_TRIANGLES, 36, 6);
+    glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
+    glBindTexture(GL_TEXTURE_2D, titleButton1);
+    glDrawArrays(GL_TRIANGLES, 42, 6);
+    glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
+    glBindTexture(GL_TEXTURE_2D, titleButton2);
+    glDrawArrays(GL_TRIANGLES, 48, 6);
+    glUniform1i(glGetUniformLocation(shaderProgramTitle,"isTextured"), 1);
+    glBindTexture(GL_TEXTURE_2D, titleButton3);
+    glDrawArrays(GL_TRIANGLES, 54, 6);
 
     glDisableVertexAttribArray(glGetAttribLocation(shaderProgramTitle,"a_vertex"));
     glDisableVertexAttribArray(glGetAttribLocation(shaderProgramTitle,"a_color"));
@@ -2634,6 +2952,10 @@ bool update(float time)
 void terminate2(void)
 {
     // No resources have to be freed in this case.
+}
+
+void modifierHandle(GLFWwindow *window, int key, int scancode, int action, int mods){
+
 }
 
 void keyhandle(GLFWwindow *window, int key, int scancode, int action, int mods){
@@ -3086,7 +3408,8 @@ void keyhandle(GLFWwindow *window, int key, int scancode, int action, int mods){
 
             updateVBOs();
         }
-    }else{
+    }
+    if(action == GLFW_RELEASE){
         if(key == GLFW_KEY_LEFT_SHIFT){
             BOOL_SHIFT = false;
         }
@@ -3333,7 +3656,7 @@ void movemouseTitle(GLFWwindow * window, double xPos, double yPos){
     MXTitle = xPos;
     MYTitle = yPos;
 
-    if(MOUSE_CLICK_LEFT_TITLE && awidthTitle*0.15 < MXTitle && awidthTitle*0.85 > MXTitle){
+    if(MOUSE_CLICK_LEFT_TITLE && awidthTitle*0.30 < MXTitle && awidthTitle*0.85 > MXTitle){
         movedX = (floor(MXTitle) - floor(prevMXTitle))*2;
         movedY = (floor(MYTitle) - floor(prevMYTitle))*2;
 
@@ -3392,7 +3715,7 @@ int initGLFW()
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
     glfwSetWindowSizeCallback(window, reshape);
-    glfwSetWindowSizeCallback(windowTitle, reshape);
+    glfwSetWindowSizeCallback(windowTitle, reshapeTitle);
 
     glfwSetKeyCallback(window, keyhandle);
 
@@ -3427,38 +3750,273 @@ int main(int argc, char* argv[])
     do{
         auto t0 = std::chrono::high_resolution_clock::now();
 
-        if(MOUSE_CLICK_LEFT_TITLE && awidthTitle*0.15 < MXTitle && awidthTitle*0.85 > MXTitle){
-            glfwGetWindowPos(::windowTitle, &wtx, &wty);
-            glfwSetCursorPos(::windowTitle, clickPosX, clickPosY);
-        }
-        if(MOUSE_CLICK_LEFT_TITLE && awidthTitle*0.85 < MXTitle && awidthTitle*0.90 > MXTitle){
-            if(isMinimized == false){
-                glfwSetWindowSize(window, 0, 0);
-                isMinimized = true;
-            }else{
-                glfwSetWindowSize(window, 1152, 648);
-                glfwSetWindowSize(windowTitle, 1152, 40);
-                isMinimized = false;
-            }
-            MOUSE_CLICK_LEFT_TITLE = false;
-        }
-        if(MOUSE_CLICK_LEFT_TITLE && awidthTitle*0.90 < MXTitle && awidthTitle*0.95 > MXTitle){
-            GLFWmonitor* primary = glfwGetPrimaryMonitor();
+        glfwMakeContextCurrent(windowTitle);
 
-            const GLFWvidmode* mode = glfwGetVideoMode(primary);
-            if(isMaximized == false){
-                glfwSetWindowSize(window, mode->width, mode->height);
-                glfwSetWindowSize(windowTitle, 1152, 40);
-                isMaximized = true;
+        glBindBuffer(GL_ARRAY_BUFFER, CBOT);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, cbot.size() * sizeof(GLubyte), (GLubyte*) cbot.data());
+
+        if(awidthTitle*0.00 < MXTitle && awidthTitle*0.075 > MXTitle){
+            vector<GLubyte> localCBO;
+            localCBO.resize(24);
+            GLint IDX = 0;
+
+            if(MOUSE_CLICK_LEFT_TITLE){
+                isTextureSelector = false;
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 30;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 30;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
             }else{
-                glfwSetWindowSize(window, 1152, 648);
-                glfwSetWindowSize(windowTitle, 1152, 40);
-                isMaximized = false;
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 15;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 15;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
             }
-            MOUSE_CLICK_LEFT_TITLE = false;
+
+            glBindBuffer(GL_ARRAY_BUFFER, CBOT);
+            glBufferSubData(GL_ARRAY_BUFFER, 0 + IDX*24, (24) * sizeof(GLubyte), (GLubyte*) localCBO.data());
         }
-        if(MOUSE_CLICK_LEFT_TITLE && awidthTitle*0.95 < MXTitle && awidthTitle*1.00 > MXTitle){
-            glfwSetWindowShouldClose(window, GLFW_TRUE);
+        if(awidthTitle*0.075 < MXTitle && awidthTitle*0.15 > MXTitle){
+            vector<GLubyte> localCBO;
+            localCBO.resize(24);
+            GLint IDX = 1;
+
+            if(MOUSE_CLICK_LEFT_TITLE){
+                isTextureSelector = true;
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 30;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 30;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }else{
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 15;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 15;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }
+
+            glBindBuffer(GL_ARRAY_BUFFER, CBOT);
+            glBufferSubData(GL_ARRAY_BUFFER, 0 + IDX*24, (24) * sizeof(GLubyte), (GLubyte*) localCBO.data());
+        }
+        if(awidthTitle*0.15 < MXTitle && awidthTitle*0.225 > MXTitle){
+            if(MOUSE_CLICK_LEFT_TITLE){
+
+            }
+        }
+        if(awidthTitle*0.225 < MXTitle && awidthTitle*0.25 > MXTitle){
+            vector<GLubyte> localCBO;
+            localCBO.resize(24);
+            GLint IDX = 3;
+
+            if(MOUSE_CLICK_LEFT_TITLE){
+                //select menu -
+                string idx = to_string(actualMenu);
+                saveUI(idx);
+                if(actualMenu > 0){
+                    actualMenu -= 1;
+                }
+                idx = to_string(actualMenu);
+                loadUI(idx);
+                MOUSE_CLICK_LEFT_TITLE = false;
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 30;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 30;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }else{
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 15;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 15;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }
+
+            glBindBuffer(GL_ARRAY_BUFFER, CBOT);
+            glBufferSubData(GL_ARRAY_BUFFER, 0 + IDX*24, (24) * sizeof(GLubyte), (GLubyte*) localCBO.data());
+        }
+        if(awidthTitle*0.25 < MXTitle && awidthTitle*0.275 > MXTitle){
+            vector<GLubyte> localCBO;
+            localCBO.resize(24);
+            GLint IDX = 4;
+
+            if(MOUSE_CLICK_LEFT_TITLE){
+                //select menu +
+                string idx = to_string(actualMenu);
+                saveUI(idx);
+                if(actualMenu < numMenu){
+                    actualMenu += 1;
+                }
+                idx = to_string(actualMenu);
+                loadUI(idx);
+                MOUSE_CLICK_LEFT_TITLE = false;
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 30;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 30;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }else{
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 15;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 15;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }
+
+            glBindBuffer(GL_ARRAY_BUFFER, CBOT);
+            glBufferSubData(GL_ARRAY_BUFFER, 0 + IDX*24, (24) * sizeof(GLubyte), (GLubyte*) localCBO.data());
+        }
+        if(awidthTitle*0.275 < MXTitle && awidthTitle*0.30 > MXTitle){
+            vector<GLubyte> localCBO;
+            localCBO.resize(24);
+            GLint IDX = 5;
+
+            if(MOUSE_CLICK_LEFT_TITLE){
+                if(BOOL_CONTROL == false){
+                    //add new menu
+                    numMenu++;
+                    string idx = to_string(numMenu);
+                    createUI(idx);
+                    saveUIpro();
+                }else{
+                    //create new project
+                    numMenu = 0;
+                    actualMenu = 0;
+                    string idx = to_string(numMenu);
+                    createUI(idx);
+                    //project file needed to work properly
+
+                    saveUIpro();
+                    loadUI(idx);
+                }
+                MOUSE_CLICK_LEFT_TITLE = false;
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 30;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 30;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }else{
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 15;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 15;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }
+
+            glBindBuffer(GL_ARRAY_BUFFER, CBOT);
+            glBufferSubData(GL_ARRAY_BUFFER, 0 + IDX*24, (24) * sizeof(GLubyte), (GLubyte*) localCBO.data());
+        }
+        if(awidthTitle*0.30 < MXTitle && awidthTitle*0.85 > MXTitle){
+            if(MOUSE_CLICK_LEFT_TITLE){
+                glfwGetWindowPos(::windowTitle, &wtx, &wty);
+                glfwSetCursorPos(::windowTitle, clickPosX, clickPosY);
+            }
+        }
+        if(awidthTitle*0.85 < MXTitle && awidthTitle*0.90 > MXTitle){
+            vector<GLubyte> localCBO;
+            localCBO.resize(24);
+            GLint IDX = 7;
+
+            if(MOUSE_CLICK_LEFT_TITLE){
+                if(isMinimized == false){
+                    glfwHideWindow(window);
+                    isMinimized = true;
+                }else{
+                    glfwShowWindow(window);
+                    isMinimized = false;
+                }
+                MOUSE_CLICK_LEFT_TITLE = false;
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 30;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 30;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }else{
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 15;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 15;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }
+
+            glBindBuffer(GL_ARRAY_BUFFER, CBOT);
+            glBufferSubData(GL_ARRAY_BUFFER, 0 + IDX*24, (24) * sizeof(GLubyte), (GLubyte*) localCBO.data());
+        }
+        if(awidthTitle*0.90 < MXTitle && awidthTitle*0.95 > MXTitle){
+            vector<GLubyte> localCBO;
+            localCBO.resize(24);
+            GLint IDX = 8;
+
+            if(MOUSE_CLICK_LEFT_TITLE){
+                GLFWmonitor* primary = glfwGetPrimaryMonitor();
+
+                const GLFWvidmode* mode = glfwGetVideoMode(primary);
+                if(isMaximized == false){
+                    glfwSetWindowSize(window, mode->width, mode->height - 40);
+                    glfwSetWindowSize(windowTitle, mode->width, 40);
+                    isMaximized = true;
+                }else{
+                    glfwSetWindowSize(window, 1152, 648);
+                    glfwSetWindowSize(windowTitle, 1152, 40);
+                    isMaximized = false;
+                }
+                MOUSE_CLICK_LEFT_TITLE = false;
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 30;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 30;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }else{
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 15;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 15;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }
+
+            glBindBuffer(GL_ARRAY_BUFFER, CBOT);
+            glBufferSubData(GL_ARRAY_BUFFER, 0 + IDX*24, (24) * sizeof(GLubyte), (GLubyte*) localCBO.data());
+        }
+        if(awidthTitle*0.95 < MXTitle && awidthTitle*1.00 > MXTitle){
+            vector<GLubyte> localCBO;
+            localCBO.resize(24);
+            GLint IDX = 9;
+
+            if(MOUSE_CLICK_LEFT_TITLE){
+                glfwSetWindowShouldClose(window, GLFW_TRUE);
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 30;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 30;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }else{
+                for(int i=0; i<6; i++){
+                    localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
+                    localCBO[i*4 + 1] = cbot[IDX*24 + i*4 + 1] + 15;
+                    localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 15;
+                    localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
+                }
+            }
+
+            glBindBuffer(GL_ARRAY_BUFFER, CBOT);
+            glBufferSubData(GL_ARRAY_BUFFER, 0 + IDX*24, (24) * sizeof(GLubyte), (GLubyte*) localCBO.data());
         }
 
         glfwMakeContextCurrent(window);
