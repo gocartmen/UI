@@ -3451,27 +3451,33 @@ void mousefunc(GLFWwindow * window, int button, int x, int y){
         int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
         if(state == GLFW_PRESS){
             BOOL_LEFTCLICK = true;
-            if(isTextureSelector == false){
-                //set UpperLeft corner
-                if(BOOL_SHIFT != true && testmode != true){
-                    triggerOnce = true;
+            if(testmode && isTexturing){
+                if(isTextureSelector == false){
+                    blockList[actualBlockNum].texID = textureSelector->getActiveTex();
                 }
+            } else {
+                if(isTextureSelector == false){
+                    //set UpperLeft corner
+                    if(BOOL_SHIFT != true && testmode != true){
+                        triggerOnce = true;
+                    }
 
-                GLfloat mx = (((GLfloat)(MX)/(GLfloat)(awidth)-0.5)*2.0);
-                GLfloat my = (((GLfloat)(MY)/(GLfloat)(aheight)-0.5)*2.0);
+                    GLfloat mx = (((GLfloat)(MX)/(GLfloat)(awidth)-0.5)*2.0);
+                    GLfloat my = (((GLfloat)(MY)/(GLfloat)(aheight)-0.5)*2.0);
 
-                for(int i=0;i<blockNum;i++){
-                    if(mx < blockList[i].ULx && mx > blockList[i].BRx){
-                        if(my < blockList[i].ULy && my > blockList[i].BRy){
-                            blockList[i].isHover = true;
-                            if(BOOL_LEFTCLICK == true){
-                                blockList[i].isClicked = true;
+                    for(int i=0;i<blockNum;i++){
+                        if(mx < blockList[i].ULx && mx > blockList[i].BRx){
+                            if(my < blockList[i].ULy && my > blockList[i].BRy){
+                                blockList[i].isHover = true;
+                                if(BOOL_LEFTCLICK == true){
+                                    blockList[i].isClicked = true;
+                                }
+                            }else{
+                                blockList[i].isHover = false;
                             }
                         }else{
                             blockList[i].isHover = false;
                         }
-                    }else{
-                        blockList[i].isHover = false;
                     }
                 }
             }
@@ -3503,7 +3509,11 @@ void mousefunc(GLFWwindow * window, int button, int x, int y){
             int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT);
             if(state == GLFW_PRESS){
                 BOOL_RIGHTCLICK = true;
-                isUL = !isUL;
+                if(testmode && isTexturing){
+                    textureSelector->setActiveTex(blockList[actualBlockNum].texID);
+                } else {
+                    isUL = !isUL;
+                }
             }else{//GLFW_RELEASE
                 BOOL_RIGHTCLICK = false;
             }
@@ -3599,6 +3609,7 @@ void movemouse(GLFWwindow * window, double xPos, double yPos){
 }
 
 bool MOUSE_CLICK_LEFT_TITLE = false;
+bool MOUSE_RIGHT_CLICK_TITLE = false;
 double clickPosX = 0;
 double clickPosY = 0;
 
@@ -3628,9 +3639,9 @@ void mousefuncTitle(GLFWwindow * window, int button, int x, int y){
         //std::cout << "jobb katt: " << (GLuint)state << std::endl;
         int state = glfwGetMouseButton(windowTitle, GLFW_MOUSE_BUTTON_RIGHT);
         if(state == GLFW_PRESS){
-
+            MOUSE_RIGHT_CLICK_TITLE = true;
         }else{//GLFW_RELEASE
-
+            MOUSE_RIGHT_CLICK_TITLE = false;
         }
     }
 }
@@ -3689,6 +3700,7 @@ int initGLFW()
 
     glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     window = glfwCreateWindow( 1152, 648, "MAP Generator", NULL, NULL);
 
     windowTitle = glfwCreateWindow( 1152,  40, "MAP Generator Title Bar", NULL, NULL);
@@ -3768,6 +3780,9 @@ int main(int argc, char* argv[])
                     localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
                     localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
                 }
+                glfwShowWindow(window);
+                MOUSE_CLICK_LEFT_TITLE = false;
+                isMinimized = false;
             }else{
                 for(int i=0; i<6; i++){
                     localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
@@ -3793,6 +3808,9 @@ int main(int argc, char* argv[])
                     localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
                     localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
                 }
+                glfwShowWindow(window);
+                MOUSE_CLICK_LEFT_TITLE = false;
+                isMinimized = false;
             }else{
                 for(int i=0; i<6; i++){
                     localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
@@ -3831,6 +3849,8 @@ int main(int argc, char* argv[])
                     localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
                     localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
                 }
+                glfwShowWindow(window);
+                isMinimized = false;
             }else{
                 for(int i=0; i<6; i++){
                     localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
@@ -3864,6 +3884,8 @@ int main(int argc, char* argv[])
                     localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
                     localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
                 }
+                glfwShowWindow(window);
+                isMinimized = false;
             }else{
                 for(int i=0; i<6; i++){
                     localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
@@ -3906,6 +3928,8 @@ int main(int argc, char* argv[])
                     localCBO[i*4 + 2] = cbot[IDX*24 + i*4 + 2] + 30;
                     localCBO[i*4 + 3] = cbot[IDX*24 + i*4 + 3];
                 }
+                glfwShowWindow(window);
+                isMinimized = false;
             }else{
                 for(int i=0; i<6; i++){
                     localCBO[i*4 + 0] = cbot[IDX*24 + i*4 + 0] + 15;
@@ -3920,8 +3944,11 @@ int main(int argc, char* argv[])
         }
         if(awidthTitle*0.30 < MXTitle && awidthTitle*0.85 > MXTitle){
             if(MOUSE_CLICK_LEFT_TITLE){
+                glfwWaitEvents();
                 glfwGetWindowPos(::windowTitle, &wtx, &wty);
+                glfwWaitEvents();
                 glfwSetCursorPos(::windowTitle, clickPosX, clickPosY);
+                glfwWaitEvents();
             }
         }
         if(awidthTitle*0.85 < MXTitle && awidthTitle*0.90 > MXTitle){
