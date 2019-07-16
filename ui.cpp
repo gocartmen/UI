@@ -125,6 +125,14 @@ void UI::setTextures(GLuint textures[])
     }
 }
 
+void UI::setTexturesSelect(GLuint texturesSelect[])
+{
+    isTextureSelect = true;
+    for(int i=0;i<28*3;i++){
+        this->texturesSelect[i] = texturesSelect[i];
+    }
+}
+
 void UI::setTexture(GLuint ID, GLuint tex)
 {
     blockList[ID].texID = tex;
@@ -304,7 +312,12 @@ void UI::draw(GLuint program)
     for(int i=0;i<blockNum;i++){
         //glUniform1i(glGetUniformLocation(program.program,"isTextured"), 0);
         glUniform1i(glGetUniformLocation(program,"isTextured"), 1);
-        glBindTexture(GL_TEXTURE_2D, textures[texture[i]]);//texturing is under development
+        if(((i > 1 && i < 2+28) || (i == 33)) && isTextureSelect == true){
+            glBindTexture(GL_TEXTURE_2D, texturesSelect[texture[i]]);
+        }else{
+            glBindTexture(GL_TEXTURE_2D, textures[texture[i]]);
+        }
+        //texturing is under development
         glDrawArrays(GL_TRIANGLES, i*6, 6);
     }
 

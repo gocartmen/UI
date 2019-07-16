@@ -37,6 +37,9 @@ private:
 
     GLuint textures[28*3];
     struct dimension dimensions[28*3];
+    GLuint texturesSelect[28*3];
+    struct dimension dimensionsSelect[28*3];
+
     GLuint activeTex = 0;
 public:
     TextureSelector();
@@ -61,6 +64,7 @@ public:
     string getSelected();
 
     void setTextures(GLuint textures[], struct dimension dimensions[]);
+    void setTexturesSelect(GLuint texturesSelect[], struct dimension dimensionsSelect[]);
     GLuint getActiveTex() const;
     void setActiveTex(const GLuint &value);
     bool getIsRemoved() const;

@@ -32,6 +32,8 @@ private:
 
     vector<GLuint> texture;//texture vector will contain the texture ID-s for textures loaded
     GLuint textures[28*3];
+    GLuint texturesSelect[28*3];
+    bool isTextureSelect = false;
 
     void load(string filename);
 public:
@@ -48,6 +50,7 @@ public:
     GLint controller(GLfloat x, GLfloat y);
 
     void setTextures(GLuint textures[]);
+    void setTexturesSelect(GLuint texturesSelect[]);
     void setTexture(GLuint ID, GLuint tex);
     GLuint getBlockNum() const;
     vector<block> getBlockList() const;

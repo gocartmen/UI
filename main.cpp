@@ -208,6 +208,17 @@ struct dimension lastDimensions;
 string texPaths[28*3];
 //--------------
 
+//texturing menu
+GLuint actualTexNumUI = 0;
+GLuint texNumUI = 0;
+GLuint texNumMaxUI = 84;//28*3
+
+GLuint texturesUI[28*3];
+struct dimension dimensionsUI[28*3];
+struct dimension lastDimensionsUI;
+string texPathsUI[28*3];
+//--------------
+
 //+all menu's blockList should be stored in memory for node editor only
 //node editor saves/loads
 std::vector<struct block> * nodeBlockList = NULL;
@@ -423,7 +434,32 @@ void loadTextures(){
     }
 
     cout << "setTextures...." << std::endl;
-    textureSelector->setTextures(textures, dimensions);
+    textureSelector->setTexturesSelect(textures, dimensions);
+    cout << "  SET!!!!" << std::endl;
+}
+
+void loadTexturesUI(){
+    glfwMakeContextCurrent(window);
+    //load texture data
+    ifstream file;
+    file.open("UI/texture.data");
+
+    file >> texNumUI;
+    for(int i=0;i<texNumUI;i++){
+        file >> texPathsUI[i];
+    }
+
+    file.close();
+
+    for(int i=0;i<texNumUI;i++){
+        texturesUI[i] = loadTexture(texPathsUI[i]);
+
+        dimensionsUI[i].x = lastDimensionsUI.x;
+        dimensionsUI[i].y = lastDimensionsUI.y;
+    }
+
+    cout << "setTextures...." << std::endl;
+    textureSelector->setTextures(texturesUI, dimensionsUI);
     cout << "  SET!!!!" << std::endl;
 }
 
@@ -2460,6 +2496,7 @@ bool init(void)
 
     cout << "loading textures...";
     loadTextures();
+    loadTexturesUI();
     cout << "  loaded!!" << std::endl;
 
     string idx = to_string(actualMenu);
@@ -2827,14 +2864,16 @@ bool update(float time)
             textureSelector->setTextures(textures, dimensions);
             saveTextures();
             loadTextures();
+            loadTexturesUI();
         }
         if(textureSelector->getIsRemoved()){
             textures[texNum-1] = 0;
 
             loadTextures();
+            loadTexturesUI();
             //textures[texNum] = loadTexture("textures/backgrounds/emptyTex.tga");
 
-            textureSelector->setTextures(textures, dimensions);
+            //textureSelector->setTextures(textures, dimensions);
             //textureSelector->setIsRemoved(false);
         }
 

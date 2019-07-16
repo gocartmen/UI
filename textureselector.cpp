@@ -59,6 +59,31 @@ void TextureSelector::setTextures(GLuint textures[], dimension dimensions[])
     cout << "after for 2" << endl;
 }
 
+void TextureSelector::setTexturesSelect(GLuint texturesSelect[], dimension dimensionsSelect[])
+{
+    cout << "before for" << endl;
+    for(int i=0;i<28*3;i++){
+        this->texturesSelect[i] = texturesSelect[i];
+    }
+    cout << "after for" << endl;
+    //ui->setTextures(textures);
+    ui->setTexturesSelect(texturesSelect);
+    cout << "between UIs" << endl;
+    ui2->setTextures(textures);
+
+    cout << "afterBefore" << endl;
+
+    ui->updateTBO(dimensionsSelect, 2, 30);
+
+    cout << "before for 2" << endl;
+
+    for(int i=0;i<84;i++){
+        this->dimensionsSelect[i] = dimensionsSelect[i];
+    }
+
+    cout << "after for 2" << endl;
+}
+
 GLuint TextureSelector::getActiveTex() const
 {
     return activeTex;
@@ -140,17 +165,19 @@ void TextureSelector::drawUI(GLuint program, GLuint width, GLuint height)
             ui->update(LID, false);
 
             for(int i=0;i<28;i++){
+                ui->setTexture(i+2, i);
                 if(LID == i+2){
                     if(clicked == true){
                         activeTex = i;
                         ui->setTexture(33, i);
-                        ui->updateTBO(dimensions, 33, 34, activeTex);
+                        ui->updateTBO(dimensionsSelect, 33, 34, activeTex);
                     }
                 }
             }
+            ui->updateTBO(dimensionsSelect, 2, 30, -1);
 
             if(isRemoved == true){//after removing texture the dimensions must be adjusted
-                ui->updateTBO(dimensions, 33, 34, activeTex);
+                ui->updateTBO(dimensionsSelect, 33, 34, activeTex);
                 isRemoved = false;
             }
 
