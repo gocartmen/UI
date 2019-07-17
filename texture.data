@@ -1,4 +1,4 @@
-9
+11
 textures/Game_Elements/Wood/wooden_UI_1.tga
 textures/Game_Elements/Wood/wooden_UI_2.tga
 textures/Game_Elements/Wood/wooden_UI_icon.tga
@@ -8,3 +8,5 @@ textures/Game_Elements/Wood/UI_minimap_maparea.tga
 textures/Game_Elements/Wood/UI_modify_icon.tga
 textures/Game_Elements/Wood/UI_minimize.tga
 textures/Game_Elements/Wood/UI_wood_overlay.tga
+textures/Game_Elements/Wood/UI_bars.tga
+textures/Game_Elements/Wood/UI_45.tga
