@@ -156,7 +156,7 @@ void GenerateCppClass::generateHeaderFile(string fileName, string className)
     header << "#ifndef " << toUpper(className) << "_H\n"
            << "#define " << toUpper(className) << "_H\n"
            << "\n"
-           << "#include <ui.h>\n"
+           << "#include \"ui.h\"\n"
            << "\n"
            << "using namespace std;\n"
            << "\n"
