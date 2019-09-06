@@ -63,6 +63,31 @@ void GenerateCppClass::addButtons(string fileName, string className)
                     << "\tui = new UI();\n"
                     << "\tui->init(\"UI/" << fileName << ".bin\");\n"
                     << "\tui->updateVBOs();\n"
+                    << "\tfor(int i=0; i<" << blocks.size() << "; i++){\n"
+
+                    << "\t\tif(ui->getBlockList()[i].ID == 1){\n"
+                    << "\t\t\tbuttonVec.push_back(\n"
+                    << "\t\t\t\tIButton(\n"
+                    << "\t\t\t\t\tui->getBlockList()[i].ULx,\n"
+                    << "\t\t\t\t\tui->getBlockList()[i].BRx,\n"
+                    << "\t\t\t\t\tui->getBlockList()[i].ULy,\n"
+                    << "\t\t\t\t\tui->getBlockList()[i].BRy\n"
+                    << "\t\t\t\t)\n"
+                    << "\t\t\t);\n"
+                    << "\t\t}\n"
+
+                    << "\t\tif(ui->getBlockList()[i].ID == 6){\n"
+                    << "\t\t\ticonVec.push_back(\n"
+                    << "\t\t\t\tIIcon(\n"
+                    << "\t\t\t\t\tui->getBlockList()[i].ULx,\n"
+                    << "\t\t\t\t\tui->getBlockList()[i].BRx,\n"
+                    << "\t\t\t\t\tui->getBlockList()[i].ULy,\n"
+                    << "\t\t\t\t\tui->getBlockList()[i].BRy\n"
+                    << "\t\t\t\t)\n"
+                    << "\t\t\t);\n"
+                    << "\t\t}\n"
+
+                    << "\t}\n"
                     << "}\n"
                     << "\n"
                     << className << "::~" << className << "()\n"
@@ -72,36 +97,29 @@ void GenerateCppClass::addButtons(string fileName, string className)
                     << "\n"
                     << "void " << className << "::setMouseInfo(bool isClicked, GLfloat mx, GLfloat my)\n"
                     << "{\n"
-                    << "\tthis.isClicked = isClicked;\n"
-                    << "\tthis.mx = mx;\n"
-                    << "\tthis.my = my;\n"
+                    << "\tthis->isClicked = isClicked;\n"
+                    << "\tthis->mx = mx;\n"
+                    << "\tthis->my = my;\n"
                     << "}\n"
                     << "\n";
 
     privateString << "\tUI * ui = nullptr;\n"
+                  << "\tstd::vector<IButton> buttonVec;\n"
+                  << "\tstd::vector<IIcon> iconVec;\n"
                   << "\tbool isClicked = false;\n"
                   << "\tGLfloat mx = 0.0f;\n"
                   << "\tGLfloat my = 0.0f;\n";
 
-    for(int i=0; i<buttons.size(); i++){
-        publicString << "\tvoid button" << buttons[i] << "();\n";
-        functionsString << "void " << className << "::button" << buttons[i] << "()\n"
-                        << "{\n"
-                        << "\tif(" << blocks[buttons[i]].ULx << " > mx && "
-                                   << blocks[buttons[i]].BRx << " < mx && "
-                                   << blocks[buttons[i]].ULy << " > my && "
-                                   << blocks[buttons[i]].BRy << " < my){\n"
-                        << "\t\tif(isClicked){\n"
-                        << "\t\t\t\n"
-                        << "\t\t} else {\n"
-                        << "\t\t\t\n"
-                        << "\t\t}\n"
-                        << "\t} else {\n"
-                        << "\t\t\n"
-                        << "\t}\n"
-                        << "}\n"
-                        << "\n";
-    }
+    publicString << "\tvoid buttons();\n";
+    functionsString << "void " << className << "::buttons()\n"
+                    << "{\n"
+                    << "\tfor(auto it : buttonVec){\n"
+                    << "\t\tif(it.isClick(mx, my, isClicked)){\n"
+                    << "\t\t\tit.clickFuncPtr();\n"
+                    << "\t\t}\n"
+                    << "\t}\n"
+                    << "}\n"
+                    << "\n";
 }
 
 void GenerateCppClass::addIcons(string fileName, string className)
@@ -128,25 +146,16 @@ void GenerateCppClass::addIcons(string fileName, string className)
         }
     }
 
-    for(int i=0; i<icons.size(); i++){
-        publicString << "\tvoid icon" << icons[i] << "();\n";
-        functionsString << "void " << className << "::icon" << icons[i] << "()\n"
-                        << "{\n"
-                        << "\tif(" << blocks[icons[i]].ULx << " > mx && "
-                                   << blocks[icons[i]].BRx << " < mx && "
-                                   << blocks[icons[i]].ULy << " > my && "
-                                   << blocks[icons[i]].BRy << " < my){\n"
-                        << "\t\tif(isClicked){\n"
-                        << "\t\t\t\n"
-                        << "\t\t} else {\n"
-                        << "\t\t\t\n"
-                        << "\t\t}\n"
-                        << "\t} else {\n"
-                        << "\t\t\n"
-                        << "\t}\n"
-                        << "}\n"
-                        << "\n";
-    }
+    publicString << "\tvoid icons();\n";
+    functionsString << "void " << className << "::icons()\n"
+                    << "{\n"
+                    << "\tfor(auto it : iconVec){\n"
+                    << "\t\tif(it.isClick(mx, my, isClicked)){\n"
+                    << "\t\t\tit.clickFuncPtr();\n"
+                    << "\t\t}\n"
+                    << "\t}\n"
+                    << "}\n"
+                    << "\n";
 }
 
 void GenerateCppClass::generateHeaderFile(string fileName, string className)
@@ -156,7 +165,9 @@ void GenerateCppClass::generateHeaderFile(string fileName, string className)
     header << "#ifndef " << toUpper(className) << "_H\n"
            << "#define " << toUpper(className) << "_H\n"
            << "\n"
-           << "#include \"ui.h\"\n"
+           << "#include <Classes/UI/ui.h>\n"
+           << "#include <Classes/UI/Elements/ibutton.h>\n"
+           << "#include <Classes/UI/Elements/iicon.h>\n"
            << "\n"
            << "using namespace std;\n"
            << "\n"
@@ -174,7 +185,7 @@ void GenerateCppClass::generateHeaderFile(string fileName, string className)
 
 void GenerateCppClass::generateCppFile(string fileName, string className)
 {
-    cpp << "#include \"" << toLower(className) << ".h\"\n"
+    cpp << "#include \"Classes/UI/" << toLower(className) << ".h\"\n"
         << "\n"
         << functionsString.str()
         << "\n";
