@@ -81,12 +81,14 @@ void TextureSelector::setTexturesSelect(GLuint texturesSelect[], dimension dimen
         this->dimensionsSelect[i] = dimensionsSelect[i];
     }
 
+    ui->updateTBO(dimensionsSelect, 33, 34, activeTex);
+
     cout << "after for 2" << endl;
 }
 
 GLuint TextureSelector::getActiveTex() const
 {
-    return activeTex;
+    return activeTex+ui->getActualPage()*28;
 }
 
 void TextureSelector::setActiveTex(const GLuint &value)
@@ -181,6 +183,23 @@ void TextureSelector::drawUI(GLuint program, GLuint width, GLuint height)
                 isRemoved = false;
             }
 
+            if(LID == 30){//Prev Page
+                if(clicked == true && ui->getActualPage() > 0){
+                    activeTex = 0;
+                    ui->setActualPage(ui->getActualPage() - 1);
+                    ui->updateTBO(dimensionsSelect, 2, 30);
+                    ui->updateTBO(dimensionsSelect, 33, 34, activeTex);
+                }
+            }
+            if(LID == 31){//Next Page
+                if(clicked == true && ui->getActualPage() < 2){
+                    activeTex = 0;
+                    ui->setActualPage(ui->getActualPage() + 1);
+                    ui->updateTBO(dimensionsSelect, 2, 30);
+                    ui->updateTBO(dimensionsSelect, 33, 34, activeTex);
+                }
+            }
+
             if(LID == 34){//select add texture menu
                 if(clicked == true){
                     activeUI = 1;
@@ -198,7 +217,7 @@ void TextureSelector::drawUI(GLuint program, GLuint width, GLuint height)
                     for(int i=0;i<reNum;i++){
                         string temp;
                         remover >> temp;
-                        if(activeTex != i){
+                        if(activeTex + ui->getActualPage()*28 != i){
                             reTomb.push_back(temp);
                         }else{
                             trigger = true;

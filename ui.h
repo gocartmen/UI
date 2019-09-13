@@ -34,6 +34,7 @@ private:
     GLuint textures[28*3];
     GLuint texturesSelect[28*3];
     bool isTextureSelect = false;
+    GLuint actualPage = 0;
 
     void load(string filename);
 public:
@@ -54,6 +55,9 @@ public:
     void setTexture(GLuint ID, GLuint tex);
     GLuint getBlockNum() const;
     vector<block> getBlockList() const;
+
+    GLuint getActualPage() const;
+    void setActualPage(const GLuint &value);
 };
 
 #endif // UI_H

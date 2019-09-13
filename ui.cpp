@@ -152,6 +152,16 @@ vector<block> UI::getBlockList() const
     return blockList;
 }
 
+GLuint UI::getActualPage() const
+{
+    return actualPage;
+}
+
+void UI::setActualPage(const GLuint &value)
+{
+    actualPage = value;
+}
+
 void UI::load(string filename)
 {
     actualBlockNum = 0;
@@ -237,48 +247,48 @@ void UI::updateTBO(dimension dimensions[], GLuint IDfrom, GLuint IDto, GLint tex
 {
     if(texID == -1){
         for(int i=IDfrom;i<IDto;i++){
-            tbo[i*12 + 0] = ((0 - 0.5)*dimensions[i-IDfrom].x + 0.5);
-            tbo[i*12 + 1] = ((1 - 0.5)*dimensions[i-IDfrom].y + 0.5);
+            tbo[i*12 + 0] = ((0 - 0.5)*dimensions[i-IDfrom + actualPage*28].x + 0.5);
+            tbo[i*12 + 1] = ((1 - 0.5)*dimensions[i-IDfrom + actualPage*28].y + 0.5);
 
-            tbo[i*12 + 2] = ((1 - 0.5)*dimensions[i-IDfrom].x + 0.5);
-            tbo[i*12 + 3] = ((1 - 0.5)*dimensions[i-IDfrom].y + 0.5);
+            tbo[i*12 + 2] = ((1 - 0.5)*dimensions[i-IDfrom + actualPage*28].x + 0.5);
+            tbo[i*12 + 3] = ((1 - 0.5)*dimensions[i-IDfrom + actualPage*28].y + 0.5);
 
-            tbo[i*12 + 4] = ((0 - 0.5)*dimensions[i-IDfrom].x + 0.5);
-            tbo[i*12 + 5] = ((0 - 0.5)*dimensions[i-IDfrom].y + 0.5);
+            tbo[i*12 + 4] = ((0 - 0.5)*dimensions[i-IDfrom + actualPage*28].x + 0.5);
+            tbo[i*12 + 5] = ((0 - 0.5)*dimensions[i-IDfrom + actualPage*28].y + 0.5);
 
 
-            tbo[i*12 + 6] = ((1 - 0.5)*dimensions[i-IDfrom].x + 0.5);
-            tbo[i*12 + 7] = ((1 - 0.5)*dimensions[i-IDfrom].y + 0.5);
+            tbo[i*12 + 6] = ((1 - 0.5)*dimensions[i-IDfrom + actualPage*28].x + 0.5);
+            tbo[i*12 + 7] = ((1 - 0.5)*dimensions[i-IDfrom + actualPage*28].y + 0.5);
 
-            tbo[i*12 + 8] = ((1 - 0.5)*dimensions[i-IDfrom].x + 0.5);
-            tbo[i*12 + 9] = ((0 - 0.5)*dimensions[i-IDfrom].y + 0.5);
+            tbo[i*12 + 8] = ((1 - 0.5)*dimensions[i-IDfrom + actualPage*28].x + 0.5);
+            tbo[i*12 + 9] = ((0 - 0.5)*dimensions[i-IDfrom + actualPage*28].y + 0.5);
 
-            tbo[i*12 + 10] = ((0 - 0.5)*dimensions[i-IDfrom].x + 0.5);
-            tbo[i*12 + 11] = ((0 - 0.5)*dimensions[i-IDfrom].y + 0.5);
+            tbo[i*12 + 10] = ((0 - 0.5)*dimensions[i-IDfrom + actualPage*28].x + 0.5);
+            tbo[i*12 + 11] = ((0 - 0.5)*dimensions[i-IDfrom + actualPage*28].y + 0.5);
         }
 
         glBindBuffer(GL_ARRAY_BUFFER, TBO);
         glBufferSubData(GL_ARRAY_BUFFER, 0, tbo.size() * sizeof(GLfloat), (GLfloat*) tbo.data());
     }else{
         for(int i=IDfrom;i<IDto;i++){
-            tbo[i*12 + 0] = ((0 - 0.5)*dimensions[texID].x + 0.5);
-            tbo[i*12 + 1] = ((1 - 0.5)*dimensions[texID].y + 0.5);
+            tbo[i*12 + 0] = ((0 - 0.5)*dimensions[texID + actualPage*28].x + 0.5);
+            tbo[i*12 + 1] = ((1 - 0.5)*dimensions[texID + actualPage*28].y + 0.5);
 
-            tbo[i*12 + 2] = ((1 - 0.5)*dimensions[texID].x + 0.5);
-            tbo[i*12 + 3] = ((1 - 0.5)*dimensions[texID].y + 0.5);
+            tbo[i*12 + 2] = ((1 - 0.5)*dimensions[texID + actualPage*28].x + 0.5);
+            tbo[i*12 + 3] = ((1 - 0.5)*dimensions[texID + actualPage*28].y + 0.5);
 
-            tbo[i*12 + 4] = ((0 - 0.5)*dimensions[texID].x + 0.5);
-            tbo[i*12 + 5] = ((0 - 0.5)*dimensions[texID].y + 0.5);
+            tbo[i*12 + 4] = ((0 - 0.5)*dimensions[texID + actualPage*28].x + 0.5);
+            tbo[i*12 + 5] = ((0 - 0.5)*dimensions[texID + actualPage*28].y + 0.5);
 
 
-            tbo[i*12 + 6] = ((1 - 0.5)*dimensions[texID].x + 0.5);
-            tbo[i*12 + 7] = ((1 - 0.5)*dimensions[texID].y + 0.5);
+            tbo[i*12 + 6] = ((1 - 0.5)*dimensions[texID + actualPage*28].x + 0.5);
+            tbo[i*12 + 7] = ((1 - 0.5)*dimensions[texID + actualPage*28].y + 0.5);
 
-            tbo[i*12 + 8] = ((1 - 0.5)*dimensions[texID].x + 0.5);
-            tbo[i*12 + 9] = ((0 - 0.5)*dimensions[texID].y + 0.5);
+            tbo[i*12 + 8] = ((1 - 0.5)*dimensions[texID + actualPage*28].x + 0.5);
+            tbo[i*12 + 9] = ((0 - 0.5)*dimensions[texID + actualPage*28].y + 0.5);
 
-            tbo[i*12 + 10] = ((0 - 0.5)*dimensions[texID].x + 0.5);
-            tbo[i*12 + 11] = ((0 - 0.5)*dimensions[texID].y + 0.5);
+            tbo[i*12 + 10] = ((0 - 0.5)*dimensions[texID + actualPage*28].x + 0.5);
+            tbo[i*12 + 11] = ((0 - 0.5)*dimensions[texID + actualPage*28].y + 0.5);
         }
 
         glBindBuffer(GL_ARRAY_BUFFER, TBO);
@@ -313,7 +323,7 @@ void UI::draw(GLuint program)
         //glUniform1i(glGetUniformLocation(program.program,"isTextured"), 0);
         glUniform1i(glGetUniformLocation(program,"isTextured"), 1);
         if(((i > 1 && i < 2+28) || (i == 33)) && isTextureSelect == true){
-            glBindTexture(GL_TEXTURE_2D, texturesSelect[texture[i]]);
+            glBindTexture(GL_TEXTURE_2D, texturesSelect[texture[i]+28*actualPage]);
         }else{
             glBindTexture(GL_TEXTURE_2D, textures[texture[i]]);
         }
